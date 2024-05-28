@@ -1,3 +1,5 @@
+import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
+import 'package:anilist_client/repository/graphql_repository/repository.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,6 +32,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    super.initState();
+
+    ApiRepository().getMediaById(const MediaDetailsQuery(id: 1));
+  }
+
   int _counter = 0;
 
   void _incrementCounter() {
