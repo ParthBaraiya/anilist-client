@@ -3,9 +3,13 @@ import 'package:anilist_client/repository/graphql_repository/queries/paginated_q
 class AnimeBriefListQuery extends PaginatedGraphQlQuery {
   final int _count;
   final int _page;
+  final String search;
 
-  const AnimeBriefListQuery({required int count, required int page})
-      : _count = count,
+  const AnimeBriefListQuery({
+    required int count,
+    required int page,
+    required this.search,
+  })  : _count = count,
         _page = page;
 
   @override
@@ -13,7 +17,7 @@ class AnimeBriefListQuery extends PaginatedGraphQlQuery {
 
   @override
   String get itemQuery => '''
-    media {
+    media(search: \$search) {
       id
       title {
         userPreferred
@@ -31,7 +35,9 @@ class AnimeBriefListQuery extends PaginatedGraphQlQuery {
   ''';
 
   @override
-  Map<String, dynamic> get itemQueryVariables => throw UnimplementedError();
+  Map<String, dynamic> get itemQueryVariables => {
+        "search": search,
+      };
 
   @override
   int get page => _page;
