@@ -1,3 +1,4 @@
+import 'package:anilist_client/repository/graphql_repository/queries/anime_brief_list_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/graphql_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
 import 'package:anilist_client/repository/graphql_repository/repository_base.dart';
@@ -11,7 +12,16 @@ class ApiRepository extends ApiRepositoryBase {
 
     debugPrint("API Test: $response");
 
-    throw 'Something went wrong!';
+    throw "Not implemented yet!";
+  }
+
+  @override
+  Future<void> listMedia(AnimeBriefListQuery query) async {
+    final response = await _sendRequest(query);
+
+    debugPrint("Response: ${response}");
+
+    throw "Not implemented yet!";
   }
 
   Future<String> _sendRequest(

@@ -10,7 +10,7 @@ abstract class PaginatedGraphQlQuery extends GraphqlQuery {
 
   @override
   String get query => '''
-    Page(page: $page, perPage: $count) {
+    Page(page: \$page, perPage: \$count) {
       pageInfo {
         hasNextPage
       }

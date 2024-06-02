@@ -11,12 +11,21 @@ class AnilistClientApp extends StatefulWidget {
 
 class _AnilistClientAppState extends State<AnilistClientApp> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateRoute: AppConfig.navigation.onGenerateRoute,
-      navigatorKey: AppConfig.navigation.navigator,
-      title: "Anilist Client",
-      initialRoute: AppPages.home,
+    return GestureDetector(
+      onTap: () => FocusScope.of(AppConfig.appContext).unfocus(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: AppConfig.navigation.onGenerateRoute,
+        navigatorKey: AppConfig.navigation.navigator,
+        title: "Anilist Client",
+        initialRoute: AppPages.home,
+      ),
     );
   }
 }
