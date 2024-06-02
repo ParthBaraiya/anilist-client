@@ -23,8 +23,8 @@ class _AnilistClientAppState extends State<AnilistClientApp> {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: AppConfig.navigation.onGenerateRoute,
         navigatorKey: AppConfig.navigation.navigator,
-        title: "Anilist Client",
-        initialRoute: AppPages.home,
+        title: "Anime Zone",
+        initialRoute: AppPages.search,
       ),
     );
   }

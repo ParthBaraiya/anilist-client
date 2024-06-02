@@ -1,4 +1,5 @@
 import 'package:anilist_client/modules/home/home_screen.dart';
+import 'package:anilist_client/modules/search/search_screen.dart';
 import 'package:anilist_client/modules/utility_screens/page_not_found.dart';
 import 'package:anilist_client/services/navigation_service/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -44,9 +45,12 @@ class NavigationService {
     switch (settings.name) {
       case AppPages.home:
         return generateRoute(
-          widgetBuilder: (_, __) => HomeScreen(
-            title: "This is title",
-          ),
+          widgetBuilder: (_, __) => HomeScreen(),
+        );
+
+      case AppPages.search:
+        return generateRoute(
+          widgetBuilder: (_, __) => SearchAnime(),
         );
       default:
         return routeNotFound();

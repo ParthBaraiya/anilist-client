@@ -78,6 +78,7 @@ class AniListTheme {
 
   TextStyle get titleSmallTextStyle => TextStyle(
         color: titleSmallColor,
+        fontSize: 24,
         fontFamily: AniListFontFamily.comfortaa,
       );
 
