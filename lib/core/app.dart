@@ -24,7 +24,7 @@ class _AnilistClientAppState extends State<AnilistClientApp> {
         onGenerateRoute: AppConfig.navigation.onGenerateRoute,
         navigatorKey: AppConfig.navigation.navigator,
         title: "Anime Zone",
-        initialRoute: AppPages.search,
+        initialRoute: AppPages.home,
       ),
     );
   }

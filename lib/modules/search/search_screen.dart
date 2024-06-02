@@ -1,6 +1,7 @@
 import 'package:anilist_client/core/app_config.dart';
 import 'package:anilist_client/utilities/extensions/build_context.dart';
 import 'package:anilist_client/values/resources/fontawesome_icons.dart';
+import 'package:anilist_client/view/anime_zone_hero.dart';
 import 'package:anilist_client/view/form_fields/ani_list_search_bar.dart';
 import 'package:anilist_client/view/scaffolds/animwatch_default_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +45,13 @@ class _SearchAnimeState extends State<SearchAnime> {
               ),
             ),
             SliverAppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
+              backgroundColor: AppConfig.theme.scaffoldBackground,
+              surfaceTintColor: Colors.transparent,
+              shadowColor: Colors.black,
+              elevation: 30,
               centerTitle: false,
               pinned: true,
-              collapsedHeight: 100,
+              collapsedHeight: 110,
               automaticallyImplyLeading: false,
               floating: false,
               flexibleSpace: Padding(
@@ -57,8 +60,11 @@ class _SearchAnimeState extends State<SearchAnime> {
                   left: 20,
                   right: 20,
                 ),
-                child: AniListSearchBar(
-                  hint: 'Search anime...',
+                child: AnimeZoneHero(
+                  tag: "anime-search-text-field",
+                  child: AniListSearchBar(
+                    hint: 'Search anime...',
+                  ),
                 ),
               ),
             ),
