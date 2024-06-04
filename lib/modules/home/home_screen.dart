@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: AbsorbPointer(
                     child: AniListSearchBar(
                       hint: 'Search anime...',
+                      onSearch: (_) {}, // Just a placeholder
                     ),
                   ),
                 ),

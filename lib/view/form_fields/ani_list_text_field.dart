@@ -10,6 +10,8 @@ class AniListTextField extends StatefulWidget {
     this.initialText = '',
     this.actions = const [],
     this.leading = const [],
+    this.autoFocus = false,
+    this.onTextChange,
   });
 
   final TextEditingController? controller;
@@ -18,6 +20,8 @@ class AniListTextField extends StatefulWidget {
   final String initialText;
   final List<Widget> actions;
   final List<Widget> leading;
+  final bool autoFocus;
+  final ValueSetter<String>? onTextChange;
 
   @override
   State<AniListTextField> createState() => _AniListTextFieldState();
@@ -30,17 +34,13 @@ class _AniListTextFieldState extends State<AniListTextField> {
         text: widget.initialText,
       );
 
-  @override
-  void dispose() {
-    if (widget.node == null) {
-      _focus.dispose();
-    }
+  String? _text;
 
-    if (widget.controller == null) {
-      _controller.dispose();
+  void _onChange(String value) {
+    if (value != _text) {
+      _text = value;
+      widget.onTextChange?.call(value);
     }
-
-    super.dispose();
   }
 
   @override
@@ -71,11 +71,19 @@ class _AniListTextFieldState extends State<AniListTextField> {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: TextField(
                     focusNode: _focus,
+                    onChanged: _onChange,
                     controller: _controller,
+                    autofocus: widget.autoFocus,
                     decoration: InputDecoration.collapsed(
                       hintText: widget.hintText,
                       hintStyle: AppConfig.theme.textFieldTextStyle,
                     ),
+                    onEditingComplete: () {
+                      debugPrint("Editing complete");
+                    },
+                    onSubmitted: (value) {
+                      debugPrint("Submitted...");
+                    },
                     style: AppConfig.theme.textFieldTextStyle,
                   ),
                 ),
@@ -86,5 +94,18 @@ class _AniListTextFieldState extends State<AniListTextField> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    if (widget.node == null) {
+      _focus.dispose();
+    }
+
+    if (widget.controller == null) {
+      _controller.dispose();
+    }
+
+    super.dispose();
   }
 }

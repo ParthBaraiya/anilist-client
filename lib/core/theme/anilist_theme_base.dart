@@ -71,8 +71,10 @@ class AniListTheme {
         color: bodyTextColor,
         fontFamily: AniListFontFamily.comfortaa,
       );
+
   TextStyle get captionTextStyle => TextStyle(
         color: captionTextColor,
+        fontSize: 12,
         fontFamily: AniListFontFamily.comfortaa,
       );
 

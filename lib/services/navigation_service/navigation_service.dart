@@ -1,8 +1,10 @@
 import 'package:anilist_client/modules/home/home_screen.dart';
+import 'package:anilist_client/modules/search/domain/search_bloc.dart';
 import 'package:anilist_client/modules/search/search_screen.dart';
 import 'package:anilist_client/modules/utility_screens/page_not_found.dart';
 import 'package:anilist_client/services/navigation_service/app_pages.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef ArgumentedWidgetBuilder<Argument> = Widget Function(
     BuildContext context, Argument args);
@@ -50,7 +52,10 @@ class NavigationService {
 
       case AppPages.search:
         return generateRoute(
-          widgetBuilder: (_, __) => SearchAnime(),
+          widgetBuilder: (_, __) => BlocProvider(
+            create: (_) => SearchAnimeBloc(),
+            child: SearchAnime(),
+          ),
         );
       default:
         return routeNotFound();

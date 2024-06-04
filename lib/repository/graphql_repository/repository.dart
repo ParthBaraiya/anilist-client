@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:anilist_client/repository/graphql_repository/queries/anime_brief_list_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/graphql_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
 import 'package:anilist_client/repository/graphql_repository/repository_base.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/search_anime_response.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,12 +19,16 @@ class ApiRepository extends ApiRepositoryBase {
   }
 
   @override
-  Future<void> listMedia(AnimeBriefListQuery query) async {
+  Future<SearchAnimeResponse> listMedia(AnimeBriefListQuery query) async {
     final response = await _sendRequest(query);
+    final json = jsonDecode(response)['data']?['Page'];
 
-    debugPrint("Response: ${response}");
+    if (json == null) {
+      throw 'Error parsing anime list please try to update '
+          'the app to the latest version.';
+    }
 
-    throw "Not implemented yet!";
+    return SearchAnimeResponse.fromJson(json);
   }
 
   Future<String> _sendRequest(

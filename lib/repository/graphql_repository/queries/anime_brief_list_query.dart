@@ -6,7 +6,7 @@ class AnimeBriefListQuery extends PaginatedGraphQlQuery {
   final String? search;
 
   const AnimeBriefListQuery({
-    required int count,
+    int count = 20,
     required int page,
     this.search,
   })  : _count = count,
