@@ -12,21 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
-class SearchAnime extends StatefulWidget {
+class SearchAnime extends StatelessWidget {
   const SearchAnime({super.key});
-
-  @override
-  State<SearchAnime> createState() => _SearchAnimeState();
-}
-
-class _SearchAnimeState extends State<SearchAnime> {
-  final _controller = ScrollController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
