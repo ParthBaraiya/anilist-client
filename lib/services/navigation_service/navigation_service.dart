@@ -1,6 +1,6 @@
 import 'package:anilist_client/modules/home/home_screen.dart';
 import 'package:anilist_client/modules/search/domain/search_bloc.dart';
-import 'package:anilist_client/modules/search/search_screen.dart';
+import 'package:anilist_client/modules/search/presentation/search_screen.dart';
 import 'package:anilist_client/modules/utility_screens/page_not_found.dart';
 import 'package:anilist_client/services/navigation_service/app_pages.dart';
 import 'package:flutter/material.dart';

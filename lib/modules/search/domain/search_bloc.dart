@@ -14,6 +14,8 @@ class SearchAnimeBloc extends Bloc<SearchAnimeScreenEvent, SearchAnimeState> {
 
   Future<void> _handleSearch(
       SearchAnimeSearchEvent event, Emitter<SearchAnimeState> emit) async {
+    if (state.state.isLoading) return;
+
     emit(SearchAnimeState.loading());
 
     final result = await _dataStore.searchAnime(event.query);
@@ -26,6 +28,8 @@ class SearchAnimeBloc extends Bloc<SearchAnimeScreenEvent, SearchAnimeState> {
 
   Future<void> _handleNextPage(
       SearchAnimeNextPageEvent event, Emitter<SearchAnimeState> emit) async {
+    if (state.state.isLoading) return;
+
     emit(SearchAnimeState.loading(
       hasMore: true,
       data: state.data,

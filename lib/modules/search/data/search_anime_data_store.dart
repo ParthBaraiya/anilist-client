@@ -16,6 +16,7 @@ class SearchAnimeDataStore {
     final _currentQuery = query;
 
     _query = query;
+    currentPage++;
 
     final response = await AppConfig.repository.listMedia(AnimeBriefListQuery(
       page: currentPage,
