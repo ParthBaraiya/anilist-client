@@ -1,13 +1,18 @@
+NOTE: This is not an official AniList client. This is just an hobby project.
+
 # anilist_client
+This is a demo AniList client project.
 
-This is a demo anilist client project.
+## Requirements
+- Flutter 3.22.2
+- Android Studio Jellyfish
 
-## Getting Started
+## Frameworks / Technology
+- State Management: [Bloc](https://bloclibrary.dev/getting-started/)
+- API calls: [GraphQL](https://graphql.org/)
 
-
-
-# Resources & References
-
+## Resources & References
 - Luffy sticker: https://www.pngegg.com/en/png-dkozw
 - Comfortaa Font Family: https://fonts.google.com/specimen/Comfortaa
 - Fontawesome Icons: https://fontawesome.com/search
+- AniList API: https://anilist.co/
