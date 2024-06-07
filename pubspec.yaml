@@ -16,6 +16,8 @@ dependencies:
   flutter_bloc: ^8.1.5
   bloc: ^8.1.4
   shimmer: ^3.0.0
+  async_utility:
+    path: packages/async_utility
 
 dev_dependencies:
   flutter_test:

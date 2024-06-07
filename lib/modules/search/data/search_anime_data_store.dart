@@ -1,9 +1,12 @@
 import 'package:anilist_client/core/app_config.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/anime_brief_list_query.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/search_anime_response.dart';
+import 'package:async_utility/async_utility.dart';
 
 class SearchAnimeDataStore {
   static const count = 20;
+
+  final _asyncQueue = AsyncQueue();
 
   final _anime = <SearchedAnime>[];
   bool _hasNextPage = true;
@@ -13,33 +16,31 @@ class SearchAnimeDataStore {
   bool get hasMore => _hasNextPage;
 
   Future<List<SearchedAnime>> searchAnime(String query) async {
-    final _currentQuery = query;
+    return (await _asyncQueue.invoke(() async {
+          _query = query;
+          currentPage = 1;
 
-    _query = query;
-    currentPage++;
+          final response =
+              await AppConfig.repository.listMedia(AnimeBriefListQuery(
+            page: currentPage,
+            count: count,
+            search: query,
+          ));
 
-    final response = await AppConfig.repository.listMedia(AnimeBriefListQuery(
-      page: currentPage,
-      count: count,
-      search: query,
-    ));
+          // If the query on the start and the query that is cached is same then only
+          // the response matters.
+          // Else the response will become invalid.
+          //
+          _anime.clear();
+          _saveData(response);
 
-    // If the query on the start and the query that is cached is same then only
-    // the response matters.
-    // Else the response will become invalid.
-    //
-    if (_currentQuery == _query) {
-      _anime.clear();
-      _saveData(response);
-    }
-
-    return _anime;
+          return _anime;
+        })) ??
+        [];
   }
 
   Future<List<SearchedAnime>> getNextPage() async {
     if (!_hasNextPage) return Future.value(_anime);
-
-    final currentQuery = _query;
 
     final response = await AppConfig.repository.listMedia(AnimeBriefListQuery(
       page: ++currentPage,
@@ -51,9 +52,7 @@ class SearchAnimeDataStore {
     // the response matters.
     // Else the response will become invalid.
     //
-    if (currentQuery == _query) {
-      _saveData(response);
-    }
+    _saveData(response);
 
     return _anime;
   }

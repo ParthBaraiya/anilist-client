@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' as convert;
 
 abstract class GraphqlQuery {
   const GraphqlQuery();
@@ -7,11 +7,13 @@ abstract class GraphqlQuery {
 
   Map<String, dynamic> get variables;
 
-  @override
-  String toString() => json.encode({
+  Map<dynamic, dynamic> get json => {
         "query": 'query (${_defineVariable(variables)}) { $query }',
         "variables": variables,
-      });
+      };
+
+  @override
+  String toString() => convert.json.encode(json);
 
   String _defineVariable(Map<String, dynamic> map) {
     return map.entries

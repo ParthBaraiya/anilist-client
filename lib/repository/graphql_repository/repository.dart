@@ -5,6 +5,8 @@ import 'package:anilist_client/repository/graphql_repository/queries/graphql_que
 import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
 import 'package:anilist_client/repository/graphql_repository/repository_base.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/search_anime_response.dart';
+import 'package:anilist_client/utilities/extensions/global.dart';
+import 'package:anilist_client/utilities/extensions/map.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -35,6 +37,19 @@ class ApiRepository extends ApiRepositoryBase {
     GraphqlQuery query, {
     InvalidResponseHandler? handleInvalidResponse,
   }) async {
+    logMessage(() {
+      return '''
+      --------------------------------------
+      --------------- Query ----------------
+      --------------------------------------
+      Type: ${query.runtimeType}
+      Data: ${query.json.beautified}
+      --------------------------------------
+      --------------- End ------------------
+      --------------------------------------
+      ''';
+    });
+
     final response = await http.post(
       Uri.parse('https://graphql.anilist.co'),
       headers: {
