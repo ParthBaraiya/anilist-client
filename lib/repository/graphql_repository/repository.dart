@@ -4,20 +4,25 @@ import 'package:anilist_client/repository/graphql_repository/queries/anime_brief
 import 'package:anilist_client/repository/graphql_repository/queries/graphql_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
 import 'package:anilist_client/repository/graphql_repository/repository_base.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/anime_details_response.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/search_anime_response.dart';
 import 'package:anilist_client/utilities/extensions/global.dart';
 import 'package:anilist_client/utilities/extensions/map.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class ApiRepository extends ApiRepositoryBase {
   @override
-  Future<void> getMediaById(MediaDetailsQuery query) async {
+  Future<AnimeDetails> getMediaById(MediaDetailsQuery query) async {
     final response = await _sendRequest(query);
 
-    debugPrint("API Test: $response");
+    final json = jsonDecode(response)['data']?['Media'];
 
-    throw "Not implemented yet!";
+    if (json == null) {
+      throw 'Error parsing anime details please try to update '
+          'the app to the latest version.';
+    }
+
+    return AnimeDetails.fromJson(json);
   }
 
   @override

@@ -1,3 +1,8 @@
+import 'package:anilist_client/repository/graphql_repository/responses/common/cover_image.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/common/page_info.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/common/title.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/enum/enums.dart';
+
 class SearchAnimeResponse {
   final PageInfo? pageInfo;
   final List<SearchedAnime>? media;
@@ -29,24 +34,24 @@ class SearchAnimeResponse {
 class SearchedAnime {
   final int? id;
   final Title? title;
-  final Type? type;
+  final MediaType type;
   final String? format;
   final CoverImage? coverImage;
   final List<String>? genres;
 
   SearchedAnime({
-    this.id,
-    this.title,
-    this.type,
-    this.format,
-    this.coverImage,
-    this.genres,
+    required this.id,
+    required this.title,
+    required this.type,
+    required this.format,
+    required this.coverImage,
+    required this.genres,
   });
 
   factory SearchedAnime.fromJson(Map<String, dynamic> json) => SearchedAnime(
         id: json["id"],
         title: json["title"] == null ? null : Title.fromJson(json["title"]),
-        type: typeValues.map[json["type"]]!,
+        type: MediaType.fromString('${json['type']}'),
         format: json["format"],
         coverImage: json["coverImage"] == null
             ? null
@@ -59,88 +64,12 @@ class SearchedAnime {
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title?.toJson(),
-        "type": typeValues.reverse[type],
+        "type": '$type',
         "format": format,
         "coverImage": coverImage?.toJson(),
         "genres":
             genres == null ? [] : List<dynamic>.from(genres!.map((x) => x)),
       };
-}
-
-class CoverImage {
-  final String? extraLarge;
-  final String? large;
-  final String? medium;
-  final String? color;
-
-  CoverImage({
-    this.extraLarge,
-    this.large,
-    this.medium,
-    this.color,
-  });
-
-  factory CoverImage.fromJson(Map<String, dynamic> json) => CoverImage(
-        extraLarge: json["extraLarge"],
-        large: json["large"],
-        medium: json["medium"],
-        color: json["color"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "extraLarge": extraLarge,
-        "large": large,
-        "medium": medium,
-        "color": color,
-      };
-}
-
-class Title {
-  final String? userPreferred;
-
-  Title({
-    this.userPreferred,
-  });
-
-  factory Title.fromJson(Map<String, dynamic> json) => Title(
-        userPreferred: json["userPreferred"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "userPreferred": userPreferred,
-      };
-}
-
-enum Type { ANIME, MANGA }
-
-final typeValues = EnumValues({"ANIME": Type.ANIME, "MANGA": Type.MANGA});
-
-class PageInfo {
-  final bool? hasNextPage;
-
-  PageInfo({
-    this.hasNextPage,
-  });
-
-  factory PageInfo.fromJson(Map<String, dynamic> json) => PageInfo(
-        hasNextPage: json["hasNextPage"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "hasNextPage": hasNextPage,
-      };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }
 
 final searchAnimeDummy = SearchAnimeResponse.fromJson({

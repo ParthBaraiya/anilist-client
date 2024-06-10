@@ -18,4 +18,13 @@ extension BuildContextExtension on BuildContext {
         result: result,
         arguments: args,
       );
+
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> snackBar(
+      String message) {
+    return (ScaffoldMessenger.of(this)..hideCurrentSnackBar()).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
 }
