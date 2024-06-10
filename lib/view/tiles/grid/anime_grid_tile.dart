@@ -31,7 +31,7 @@ class AnimeGridTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           image: DecorationImage(
             image: NetworkImage(
-              anime.coverImage?.extraLarge ?? '',
+              anime.coverImage?.large ?? '',
             ),
             fit: BoxFit.cover,
           ),
