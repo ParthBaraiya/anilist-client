@@ -11,143 +11,203 @@ class MediaDetailsQuery extends GraphqlQuery {
   String get query => '''
     Media(id: \$id) {
       id
-    idMal
-    title {
-      romaji
-      english
-      native
-      userPreferred
-    }
-    type
-    format
-    status
-    description
-    startDate {
-      year
-      month
-      day
-    }
-    endDate {
-      year
-      month
-      day
-    }
-    season
-    seasonYear
-    seasonInt
-    episodes
-    duration
-    chapters
-    volumes
-    countryOfOrigin
-    isLicensed
-    source
-    hashtag
-    trailer {
-      id
-      site
-      thumbnail
-    }
-    updatedAt
-    coverImage {
-      extraLarge
-      large
-      medium
-      color
-    }
-    bannerImage
-    genres
-    synonyms
-    averageScore
-    meanScore
-    popularity
-    isLocked
-    trending
-    favourites
-    tags {
-      id
-      name
-      isAdult
-    }
-    relations {
-      nodes {
-        title {
-          romaji
-          english
-          native
-          userPreferred
-        }
-        type
-        format
-        status
-        description
-        coverImage {
-          extraLarge
-          large
-          medium
-          color
-        }
-        bannerImage
-        siteUrl
+      idMal
+      title {
+        romaji
+        english
+        native
+        userPreferred
       }
-    }
-    characters {
-      nodes {
+      type
+      format
+      status
+      description
+      startDate {
+        year
+        month
+        day
+      }
+      endDate {
+        year
+        month
+        day
+      }
+      season
+      seasonYear
+      seasonInt
+      episodes
+      duration
+      chapters
+      volumes
+      countryOfOrigin
+      isLicensed
+      source
+      hashtag
+      trailer {
         id
-        name {
-          first
-          middle
-          last
-          full
-          native
-          userPreferred
-        }
-        gender
-        age
-        image {
-          large
-          medium
-        }
+        site
+        thumbnail
       }
-    }
-    studios {
-      nodes {
+      updatedAt
+      coverImage {
+        extraLarge
+        large
+        medium
+        color
+      }
+      bannerImage
+      genres
+      synonyms
+      averageScore
+      meanScore
+      popularity
+      isLocked
+      trending
+      favourites
+      tags {
         id
         name
-        isAnimationStudio
-        
-        siteUrl
+        isAdult
+        rank
+        description
+        category
+        isGeneralSpoiler
+        isMediaSpoiler
       }
-    }
-    isFavourite
-    isAdult
-    nextAiringEpisode {
-      id
-      airingAt
-      timeUntilAiring
-      episode
-      mediaId
-    }
-    airingSchedule {
-      nodes {
+      relations {
+        edges{
+          id
+          relationType
+          isMainStudio
+          node {
+            id
+            title {
+              userPreferred
+            }
+            coverImage {
+              extraLarge
+              large
+              medium
+              color
+            }
+            genres
+            type
+            status
+            source
+            startDate {
+              year
+              month
+              day
+            }
+            updatedAt
+            endDate {
+              year
+              month
+              day
+            }
+          }
+        }
+      }
+      characters(page: 1, perPage: 10) {
+        edges {
+          role
+          name
+          voiceActors {
+            id
+          }
+          voiceActorRoles {
+            roleNotes
+            dubGroup
+          }
+          favouriteOrder
+          node {
+            id
+            name {
+              first
+              middle
+              last
+              full
+              native
+              userPreferred
+            }
+            gender
+            age
+            image {
+              large
+              medium
+            }
+          }
+        }
+      }
+      studios {
+        nodes {
+          id
+          name
+          isFavourite
+          isAnimationStudio
+          siteUrl
+          favourites
+        }
+      }
+      isFavourite
+      isAdult
+      nextAiringEpisode {
         id
         airingAt
         timeUntilAiring
         episode
+        mediaId
       }
-    }
-    externalLinks {
-      id
-      url
-      site
-      siteId
-      type
-      color
-      icon
-      notes
-      language
-    }
-    siteUrl
+      airingSchedule {
+        nodes {
+          id
+          airingAt
+          timeUntilAiring
+          episode
+        }
+      }
+      externalLinks {
+        id
+        url
+        site
+        siteId
+        type
+        color
+        icon
+        notes
+        language
+      }
+      siteUrl
+      rankings {
+        id
+        rank
+        type
+        format
+        year
+        season
+        allTime
+      }
+      staff(page: 1, perPage: 5) {
+        edges {
+          node {
+            name {
+              first
+              middle
+              last
+              full
+              native
+              userPreferred
+            }
+            id
+            image {
+              large
+              medium
+            }
+            description
+          }
+          role
+        }
+      }
     }
   ''';
 
@@ -197,15 +257,7 @@ class MediaDetailsQuery extends GraphqlQuery {
 ///         url
 ///         site
 ///       }
-///       rankings {
-///         id
-///         rank
-///         type
-///         format
-///         year
-///          season
-///         allTime
-///       }
+
 ///        mediaListEntry {
 ///         id
 ///         userId

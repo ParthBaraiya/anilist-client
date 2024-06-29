@@ -1,17 +1,17 @@
-class Title {
+class MediaTitle {
   final String? romaji;
   final String? english;
   final String? native;
   final String? userPreferred;
 
-  Title({
+  MediaTitle({
     this.romaji,
     this.english,
     this.native,
     this.userPreferred,
   });
 
-  factory Title.fromJson(Map<String, dynamic> json) => Title(
+  factory MediaTitle.fromJson(Map<String, dynamic> json) => MediaTitle(
         romaji: json["romaji"],
         english: json["english"],
         native: json["native"],

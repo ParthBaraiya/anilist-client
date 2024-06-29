@@ -1,15 +1,15 @@
 import 'package:anilist_client/core/theme/anilist_theme_base.dart';
-import 'package:anilist_client/repository/graphql_repository/repository.dart';
+import 'package:anilist_client/repository/graphql_repository/repository_base.dart';
 import 'package:anilist_client/services/navigation_service/navigation_service.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppConfig {
   final NavigationService _navigation;
-  final ApiRepository _repository;
+  final ApiRepositoryBase _repository;
   final AniListTheme _theme;
 
   AppConfig._({
-    required ApiRepository repository,
+    required ApiRepositoryBase repository,
     required NavigationService navigation,
     required AniListTheme theme,
   })  : _navigation = navigation,
@@ -17,7 +17,7 @@ class AppConfig {
         _theme = theme;
 
   factory AppConfig.init({
-    required ApiRepository repository,
+    required ApiRepositoryBase repository,
     required NavigationService navigation,
     required AniListTheme theme,
   }) {
@@ -36,6 +36,6 @@ class AppConfig {
   static BuildContext get appContext =>
       _instance!._navigation.navigator.currentState!.context;
 
-  static ApiRepository get repository => _instance!._repository;
+  static ApiRepositoryBase get repository => _instance!._repository;
   static AniListTheme get theme => _instance!._theme;
 }

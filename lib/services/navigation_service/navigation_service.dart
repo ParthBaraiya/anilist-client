@@ -1,8 +1,11 @@
+import 'package:anilist_client/modules/anime_details/domain/anime_details_bloc.dart';
+import 'package:anilist_client/modules/anime_details/presentation/anime_details_screen.dart';
 import 'package:anilist_client/modules/home/home_screen.dart';
 import 'package:anilist_client/modules/search/domain/search_bloc.dart';
 import 'package:anilist_client/modules/search/presentation/search_screen.dart';
 import 'package:anilist_client/modules/utility_screens/page_not_found.dart';
 import 'package:anilist_client/services/navigation_service/app_pages.dart';
+import 'package:anilist_client/services/navigation_service/arguments/anime_details_route_argument.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -55,6 +58,14 @@ class NavigationService {
           widgetBuilder: (_, __) => BlocProvider(
             create: (_) => SearchAnimeBloc(),
             child: SearchAnime(),
+          ),
+        );
+
+      case AppPages.details:
+        return generateRoute<AnimeDetailsRouteArgument, void>(
+          widgetBuilder: (_, args) => BlocProvider(
+            create: (_) => AnimeDetailsBloc(id: args.id),
+            child: AnimeDetailsScreen(),
           ),
         );
       default:

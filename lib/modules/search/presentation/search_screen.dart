@@ -1,4 +1,5 @@
 import 'package:anilist_client/core/app_config.dart';
+import 'package:anilist_client/modules/anime_details/presentation/anime_grid_tile.dart';
 import 'package:anilist_client/modules/search/domain/search_bloc.dart';
 import 'package:anilist_client/modules/search/domain/search_page_events.dart';
 import 'package:anilist_client/modules/search/domain/search_page_states.dart';
@@ -7,7 +8,6 @@ import 'package:anilist_client/values/resources/fontawesome_icons.dart';
 import 'package:anilist_client/view/anime_zone_hero.dart';
 import 'package:anilist_client/view/form_fields/ani_list_search_bar.dart';
 import 'package:anilist_client/view/scaffolds/animwatch_default_scaffold.dart';
-import 'package:anilist_client/view/tiles/grid/anime_grid_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';

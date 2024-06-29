@@ -1,34 +1,28 @@
-import 'package:anilist_client/models/anime_zone_error.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/search_anime_response.dart';
-import 'package:anilist_client/values/enums.dart';
+import 'package:anilist_client/utilities/bloc_states/data_fetch_state.dart';
 
-class SearchAnimeState {
-  final NetworkState state;
+class SearchAnimeState extends DataFetchState {
   final List<SearchedAnime> data;
   final bool hasMore;
-  final AnimeZoneError? error;
 
   const SearchAnimeState.idle()
-      : state = NetworkState.idle,
-        data = const [],
-        error = null,
-        hasMore = false;
+      : data = const [],
+        hasMore = false,
+        super(state: NetworkState.idle);
 
   const SearchAnimeState.error({
-    required this.error,
+    required super.error,
     this.data = const [],
-  })  : state = NetworkState.error,
-        hasMore = false;
+  })  : hasMore = false,
+        super(state: NetworkState.error);
 
   const SearchAnimeState.loading({
     this.hasMore = false,
     this.data = const [],
-  })  : state = NetworkState.loading,
-        error = null;
+  }) : super(state: NetworkState.loading, error: null);
 
   const SearchAnimeState.success({
     required this.data,
     required this.hasMore,
-  })  : state = NetworkState.success,
-        error = null;
+  }) : super(state: NetworkState.success, error: null);
 }

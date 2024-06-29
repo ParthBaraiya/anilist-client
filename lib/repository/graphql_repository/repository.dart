@@ -12,7 +12,7 @@ import 'package:http/http.dart' as http;
 
 class ApiRepository extends ApiRepositoryBase {
   @override
-  Future<AnimeDetails> getMediaById(MediaDetailsQuery query) async {
+  Future<MediaDetails> getMediaById(MediaDetailsQuery query) async {
     final response = await _sendRequest(query);
 
     final json = jsonDecode(response)['data']?['Media'];
@@ -22,7 +22,7 @@ class ApiRepository extends ApiRepositoryBase {
           'the app to the latest version.';
     }
 
-    return AnimeDetails.fromJson(json);
+    return MediaDetails.fromJson(json);
   }
 
   @override

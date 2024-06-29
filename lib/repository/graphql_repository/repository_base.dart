@@ -1,8 +1,10 @@
 import 'package:anilist_client/repository/graphql_repository/queries/anime_brief_list_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/anime_details_response.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/search_anime_response.dart';
 
 abstract class ApiRepositoryBase {
-  Future<void> getMediaById(MediaDetailsQuery query);
+  Future<MediaDetails> getMediaById(MediaDetailsQuery query);
 
-  Future<void> listMedia(AnimeBriefListQuery query);
+  Future<SearchAnimeResponse> listMedia(AnimeBriefListQuery query);
 }

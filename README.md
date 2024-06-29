@@ -1,11 +1,14 @@
-NOTE: This is not an official AniList client. This is just an hobby project.
+### NOTE: This is not an official AniList client. This is just an hobby project.
 
-# anilist_client
-This is a demo AniList client project.
+# Ani Watch
+This app is to search anime / manga and get details about it.
 
 ## Requirements
 - Flutter 3.22.2
-- Android Studio Jellyfish
+- Android Studio Koala
+
+## Tested on
+- Android Emulator (Android 14.0)
 
 ## Frameworks / Technology
 - State Management: [Bloc](https://bloclibrary.dev/getting-started/)

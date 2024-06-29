@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 extension StringsExtension on String {
   Color get toColor {
@@ -11,4 +12,6 @@ extension StringsExtension on String {
 
     return Color(code);
   }
+
+  String get capitalized => toBeginningOfSentenceCase(this);
 }

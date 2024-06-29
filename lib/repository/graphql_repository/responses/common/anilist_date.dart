@@ -15,6 +15,8 @@ class AniListDate {
         day: json["day"],
       );
 
+  DateTime get dateTime => DateTime(year ?? 0, month ?? 0, day ?? 0);
+
   Map<String, dynamic> toJson() => {
         "year": year,
         "month": month,

@@ -1,60 +1,74 @@
+import 'package:anilist_client/core/app_config.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/anilist_date.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/cover_image.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/common/entity_image.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/common/entity_name.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/external_link.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/title.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/enum/enums.dart';
+import 'package:anilist_client/values/enum.dart';
+import 'package:flutter/material.dart';
 
-class AnimeDetails {
+class MediaDetails {
+  // Metadata...
   final int? id;
   final int? idMal;
-  final Title? title;
-  final MediaType? type;
-  final String? format;
-  final MediaStatus? status;
+  final MediaTitle? title;
+  final MediaType type;
+  final MediaFormat format;
+  final MediaStatus status;
   final String? description;
   final AniListDate? startDate;
   final AniListDate? endDate;
+  final String? countryOfOrigin;
+  final bool? isLicensed;
+  final MediaSource source;
+  final String? hashtag;
+  final int? updatedAt;
+  final CoverImage? coverImage;
+  final String? bannerImage;
+  final List<String> genres;
+  final List<String>? synonyms;
+  final int? averageScore;
+  final int? meanScore;
+  final int? popularity;
+  final int? trending;
+  final int? favourites;
+  final List<Tag> tags;
+  final String? siteUrl;
+
+  // Only for anime...
   final String? season;
   final int? seasonYear;
   final int? seasonInt;
   final int? episodes;
   final int? duration;
-  final dynamic chapters;
-  final dynamic volumes;
-  final String? countryOfOrigin;
-  final bool? isLicensed;
-  final String? source;
-  final String? hashtag;
+
+  final dynamic nextAiringEpisode;
+  final AiringSchedule? airingSchedule;
+
+  // Only for manga or novels...
+  final int? chapters;
+  final int? volumes;
   final Trailer? trailer;
-  final int? updatedAt;
-  final CoverImage? coverImage;
-  final String? bannerImage;
-  final List<String>? genres;
-  final List<String>? synonyms;
-  final int? averageScore;
-  final int? meanScore;
-  final int? popularity;
+
   final bool? isLocked;
-  final int? trending;
-  final int? favourites;
-  final List<Tag>? tags;
   final Relations? relations;
   final Characters? characters;
   final Studios? studios;
   final bool? isFavourite;
   final bool? isAdult;
-  final dynamic nextAiringEpisode;
-  final AiringSchedule? airingSchedule;
   final List<ExternalLink>? externalLinks;
-  final String? siteUrl;
+  final List<MediaRanking> rankings;
+  final MediaStaffDetails? staff;
 
-  AnimeDetails({
+  MediaDetails({
     this.id,
     this.idMal,
     this.title,
-    this.type,
-    this.format,
-    this.status,
+    this.type = MediaType.none,
+    this.format = MediaFormat.none,
+    this.status = MediaStatus.none,
     this.description,
     this.startDate,
     this.endDate,
@@ -67,13 +81,13 @@ class AnimeDetails {
     this.volumes,
     this.countryOfOrigin,
     this.isLicensed,
-    this.source,
+    this.source = MediaSource.none,
     this.hashtag,
     this.trailer,
     this.updatedAt,
     this.coverImage,
     this.bannerImage,
-    this.genres,
+    this.genres = const [],
     this.synonyms,
     this.averageScore,
     this.meanScore,
@@ -81,7 +95,7 @@ class AnimeDetails {
     this.isLocked,
     this.trending,
     this.favourites,
-    this.tags,
+    this.tags = const [],
     this.relations,
     this.characters,
     this.studios,
@@ -91,14 +105,17 @@ class AnimeDetails {
     this.airingSchedule,
     this.externalLinks,
     this.siteUrl,
+    this.rankings = const [],
+    this.staff,
   });
 
-  factory AnimeDetails.fromJson(Map<String, dynamic> json) => AnimeDetails(
+  factory MediaDetails.fromJson(Map<String, dynamic> json) => MediaDetails(
         id: json["id"],
         idMal: json["idMal"],
-        title: json["title"] == null ? null : Title.fromJson(json["title"]),
+        title:
+            json["title"] == null ? null : MediaTitle.fromJson(json["title"]),
         type: MediaType.fromString('${json["type"]}'),
-        format: json["format"],
+        format: MediaFormat.fromString('${json["format"]}'),
         status: MediaStatus.fromString('${json["status"]}'),
         description: json["description"],
         startDate: json["startDate"] == null
@@ -116,7 +133,7 @@ class AnimeDetails {
         volumes: json["volumes"],
         countryOfOrigin: json["countryOfOrigin"],
         isLicensed: json["isLicensed"],
-        source: json["source"],
+        source: MediaSource.fromString('${json["source"]}'),
         hashtag: json["hashtag"],
         trailer:
             json["trailer"] == null ? null : Trailer.fromJson(json["trailer"]),
@@ -159,7 +176,68 @@ class AnimeDetails {
             : List<ExternalLink>.from(
                 json["externalLinks"]!.map((x) => ExternalLink.fromJson(x))),
         siteUrl: json["siteUrl"],
+        rankings: json["rankings"] == null
+            ? []
+            : List<MediaRanking>.from(
+                json["rankings"]!.map((x) => MediaRanking.fromJson(x))),
+        staff: json["staff"] == null
+            ? null
+            : MediaStaffDetails.fromJson(json["staff"]),
       );
+
+  MediaSatisfaction get satisfaction =>
+      MediaSatisfaction.fromInt(averageScore ?? meanScore ?? 0);
+
+  InlineSpan get typeSpan {
+    return TextSpan(
+      children: [
+        TextSpan(
+          text: 'Type: ',
+          style: AppConfig.theme.bodyTextStyle,
+        ),
+        TextSpan(
+          text: format.display,
+          style: AppConfig.theme.bodyTextStyle.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  InlineSpan get sourceSpan {
+    return TextSpan(
+      children: [
+        TextSpan(
+          text: '\nSource: ',
+          style: AppConfig.theme.bodyTextStyle,
+        ),
+        TextSpan(
+          text: source.display,
+          style: AppConfig.theme.bodyTextStyle.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  InlineSpan get statusSpan {
+    return TextSpan(
+      children: [
+        TextSpan(
+          text: '\nStatus: ',
+          style: AppConfig.theme.bodyTextStyle,
+        ),
+        TextSpan(
+          text: status.display,
+          style: AppConfig.theme.bodyTextStyle.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -186,8 +264,7 @@ class AnimeDetails {
         "updatedAt": updatedAt,
         "coverImage": coverImage?.toJson(),
         "bannerImage": bannerImage,
-        "genres":
-            genres == null ? [] : List<dynamic>.from(genres!.map((x) => x)),
+        "genres": genres.map((x) => x).toList(),
         "synonyms":
             synonyms == null ? [] : List<dynamic>.from(synonyms!.map((x) => x)),
         "averageScore": averageScore,
@@ -196,9 +273,7 @@ class AnimeDetails {
         "isLocked": isLocked,
         "trending": trending,
         "favourites": favourites,
-        "tags": tags == null
-            ? []
-            : List<dynamic>.from(tags!.map((x) => x.toJson())),
+        "tags": tags.map((x) => x.toJson()).toList(),
         "relations": relations?.toJson(),
         "characters": characters?.toJson(),
         "studios": studios?.toJson(),
@@ -210,6 +285,7 @@ class AnimeDetails {
             ? []
             : List<dynamic>.from(externalLinks!.map((x) => x.toJson())),
         "siteUrl": siteUrl,
+        "staff": staff?.toJson(),
       };
 }
 
@@ -264,34 +340,78 @@ class AiringScheduleNode {
 }
 
 class Characters {
-  final List<MediaCharacter>? nodes;
+  final List<CharacterMeta> edges;
 
   Characters({
-    this.nodes,
+    this.edges = const [],
   });
 
   factory Characters.fromJson(Map<String, dynamic> json) => Characters(
-        nodes: json["nodes"] == null
+        edges: json["edges"] == null
             ? []
-            : List<MediaCharacter>.from(
-                json["nodes"]!.map((x) => MediaCharacter.fromJson(x))),
+            : List<CharacterMeta>.from(
+                json["edges"]!.map((x) => CharacterMeta.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "nodes": nodes == null
-            ? []
-            : List<dynamic>.from(nodes!.map((x) => x.toJson())),
+        "edges": edges.map((x) => x.toJson()),
       };
 }
 
-class MediaCharacter {
+class CharacterMeta {
+  final CharacterRole role;
+  final dynamic name;
+  final List<dynamic>? voiceActors;
+  final List<dynamic>? voiceActorRoles;
+  final dynamic favouriteOrder;
+  final CharacterDetails? node;
+
+  CharacterMeta({
+    this.role = CharacterRole.none,
+    this.name,
+    this.voiceActors,
+    this.voiceActorRoles,
+    this.favouriteOrder,
+    this.node,
+  });
+
+  factory CharacterMeta.fromJson(Map<String, dynamic> json) => CharacterMeta(
+        role: CharacterRole.fromString('${json["role"]}'),
+        name: json["name"],
+        voiceActors: json["voiceActors"] == null
+            ? []
+            : List<dynamic>.from(json["voiceActors"]!.map((x) => x)),
+        voiceActorRoles: json["voiceActorRoles"] == null
+            ? []
+            : List<dynamic>.from(json["voiceActorRoles"]!.map((x) => x)),
+        favouriteOrder: json["favouriteOrder"],
+        node: json["node"] == null
+            ? null
+            : CharacterDetails.fromJson(json["node"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "role": '${role}',
+        "name": name,
+        "voiceActors": voiceActors == null
+            ? []
+            : List<dynamic>.from(voiceActors!.map((x) => x)),
+        "voiceActorRoles": voiceActorRoles == null
+            ? []
+            : List<dynamic>.from(voiceActorRoles!.map((x) => x)),
+        "favouriteOrder": favouriteOrder,
+        "node": node?.toJson(),
+      };
+}
+
+class CharacterDetails {
   final int? id;
-  final Name? name;
+  final EntityName? name;
   final String? gender;
   final String? age;
-  final Image? image;
+  final EntityImage? image;
 
-  MediaCharacter({
+  CharacterDetails({
     this.id,
     this.name,
     this.gender,
@@ -299,12 +419,14 @@ class MediaCharacter {
     this.image,
   });
 
-  factory MediaCharacter.fromJson(Map<String, dynamic> json) => MediaCharacter(
+  factory CharacterDetails.fromJson(Map<String, dynamic> json) =>
+      CharacterDetails(
         id: json["id"],
-        name: json["name"] == null ? null : Name.fromJson(json["name"]),
+        name: json["name"] == null ? null : EntityName.fromJson(json["name"]),
         gender: json["gender"],
         age: json["age"],
-        image: json["image"] == null ? null : Image.fromJson(json["image"]),
+        image:
+            json["image"] == null ? null : EntityImage.fromJson(json["image"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -316,126 +438,132 @@ class MediaCharacter {
       };
 }
 
-class Image {
-  final String? large;
-  final String? medium;
-
-  Image({
-    this.large,
-    this.medium,
-  });
-
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
-        large: json["large"],
-        medium: json["medium"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "large": large,
-        "medium": medium,
-      };
-}
-
-class Name {
-  final String? first;
-  final dynamic middle;
-  final String? last;
-  final String? full;
-  final String? native;
-  final String? userPreferred;
-
-  Name({
-    this.first,
-    this.middle,
-    this.last,
-    this.full,
-    this.native,
-    this.userPreferred,
-  });
-
-  factory Name.fromJson(Map<String, dynamic> json) => Name(
-        first: json["first"],
-        middle: json["middle"],
-        last: json["last"],
-        full: json["full"],
-        native: json["native"],
-        userPreferred: json["userPreferred"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "first": first,
-        "middle": middle,
-        "last": last,
-        "full": full,
-        "native": native,
-        "userPreferred": userPreferred,
-      };
-}
-
 class Relations {
-  final List<MediaRelation>? nodes;
+  final List<MediaRelation> edges;
 
   Relations({
-    this.nodes,
+    this.edges = const [],
   });
 
   factory Relations.fromJson(Map<String, dynamic> json) => Relations(
-        nodes: json["nodes"] == null
+        edges: json["edges"] == null
             ? []
             : List<MediaRelation>.from(
-                json["nodes"]!.map((x) => MediaRelation.fromJson(x))),
+                json["edges"]!.map((x) => MediaRelation.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
-        "nodes": nodes == null
-            ? []
-            : List<dynamic>.from(nodes!.map((x) => x.toJson())),
+        "edges": edges.map((x) => x.toJson()),
       };
 }
 
 class MediaRelation {
-  final Title? title;
-  final MediaType? type;
-  final String? format;
-  final MediaStatus? status;
-  final String? description;
-  final CoverImage? coverImage;
-  final String? bannerImage;
-  final String? siteUrl;
+  final int? id;
+  final MediaRelationType relationType;
+  final bool? isMainStudio;
+  final RelationMedia? node;
 
   MediaRelation({
-    this.title,
-    this.type,
-    this.format,
-    this.status,
-    this.description,
-    this.coverImage,
-    this.bannerImage,
-    this.siteUrl,
+    this.id,
+    this.relationType = MediaRelationType.none,
+    this.isMainStudio,
+    this.node,
   });
 
   factory MediaRelation.fromJson(Map<String, dynamic> json) => MediaRelation(
-        title: json["title"] == null ? null : Title.fromJson(json["title"]),
-        type: MediaType.fromString('${json["type"]}'),
-        format: json["format"],
-        status: MediaStatus.fromString('${json["status"]}'),
-        description: json["description"],
-        coverImage: json["coverImage"] == null
-            ? null
-            : CoverImage.fromJson(json["coverImage"]),
-        bannerImage: json["bannerImage"],
-        siteUrl: json["siteUrl"],
+        id: json["id"],
+        relationType: MediaRelationType.fromString('${json["relationType"]}'),
+        isMainStudio: json["isMainStudio"],
+        node:
+            json["node"] == null ? null : RelationMedia.fromJson(json["node"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
+        "relationType": relationType.display,
+        "isMainStudio": isMainStudio,
+        "node": node?.toJson(),
+      };
+}
+
+class RelationMedia {
+  final int? id;
+  final MediaTitle? title;
+  final List<String>? genres;
+  final MediaType type;
+  final MediaStatus status;
+  final MediaSource source;
+  final AniListDate? startDate;
+  final AniListDate? endDate;
+  final CoverImage? coverImage;
+
+  RelationMedia({
+    this.id,
+    this.title,
+    this.genres,
+    this.type = MediaType.none,
+    this.status = MediaStatus.none,
+    this.source = MediaSource.none,
+    this.startDate,
+    this.endDate,
+    this.coverImage,
+  });
+
+  factory RelationMedia.fromJson(Map<String, dynamic> json) => RelationMedia(
+        id: json["id"],
+        title:
+            json["title"] == null ? null : MediaTitle.fromJson(json["title"]),
+        genres: json["genres"] == null
+            ? []
+            : List<String>.from(json["genres"]!.map((x) => x)),
+        type: MediaType.fromString('${json["type"]}'),
+        status: MediaStatus.fromString('${json["status"]}'),
+        source: MediaSource.fromString('${json["source"]}'),
+        startDate: json["startDate"] == null
+            ? null
+            : AniListDate.fromJson(json["startDate"]),
+        endDate: json["endDate"] == null
+            ? null
+            : AniListDate.fromJson(json["endDate"]),
+        coverImage: json["coverImage"] == null
+            ? null
+            : CoverImage.fromJson(json["coverImage"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title?.toJson(),
+        "genres":
+            genres == null ? [] : List<dynamic>.from(genres!.map((x) => x)),
         "type": '$type',
-        "format": format,
         "status": '$status',
-        "description": description,
-        "coverImage": coverImage?.toJson(),
-        "bannerImage": bannerImage,
-        "siteUrl": siteUrl,
+        "source": '$source',
+        "startDate": startDate?.toJson(),
+        "endDate": endDate?.toJson(),
+      };
+}
+
+class Date {
+  final int? year;
+  final int? month;
+  final int? day;
+
+  Date({
+    this.year,
+    this.month,
+    this.day,
+  });
+
+  factory Date.fromJson(Map<String, dynamic> json) => Date(
+        year: json["year"],
+        month: json["month"],
+        day: json["day"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "year": year,
+        "month": month,
+        "day": day,
       };
 }
 
@@ -463,28 +591,36 @@ class Studios {
 class MediaStudio {
   final int? id;
   final String? name;
+  final bool? isFavourite;
   final bool? isAnimationStudio;
   final String? siteUrl;
+  final int? favourites;
 
   MediaStudio({
     this.id,
     this.name,
+    this.isFavourite,
     this.isAnimationStudio,
     this.siteUrl,
+    this.favourites,
   });
 
   factory MediaStudio.fromJson(Map<String, dynamic> json) => MediaStudio(
         id: json["id"],
         name: json["name"],
+        isFavourite: json["isFavourite"],
         isAnimationStudio: json["isAnimationStudio"],
         siteUrl: json["siteUrl"],
+        favourites: json["favourites"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
+        "isFavourite": isFavourite,
         "isAnimationStudio": isAnimationStudio,
         "siteUrl": siteUrl,
+        "favourites": favourites,
       };
 }
 
@@ -492,23 +628,43 @@ class Tag {
   final int? id;
   final String? name;
   final bool? isAdult;
+  final int? rank;
+  final String? description;
+  final String? category;
+  final bool? isGeneralSpoiler;
+  final bool? isMediaSpoiler;
 
   Tag({
     this.id,
     this.name,
     this.isAdult,
+    this.rank,
+    this.description,
+    this.category,
+    this.isGeneralSpoiler,
+    this.isMediaSpoiler,
   });
 
   factory Tag.fromJson(Map<String, dynamic> json) => Tag(
         id: json["id"],
         name: json["name"],
         isAdult: json["isAdult"],
+        rank: json["rank"],
+        description: json["description"],
+        category: json["category"],
+        isGeneralSpoiler: json["isGeneralSpoiler"],
+        isMediaSpoiler: json["isMediaSpoiler"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
         "isAdult": isAdult,
+        "rank": rank,
+        "description": description,
+        "category": category,
+        "isGeneralSpoiler": isGeneralSpoiler,
+        "isMediaSpoiler": isMediaSpoiler,
       };
 }
 
@@ -533,5 +689,118 @@ class Trailer {
         "id": id,
         "site": site,
         "thumbnail": thumbnail,
+      };
+}
+
+class MediaRanking {
+  final int? id;
+  final int? rank;
+  final MediaRankType type;
+  final MediaFormat format;
+  final int? year;
+  final MediaSeason season;
+  final bool? allTime;
+  final String? context;
+
+  MediaRanking({
+    this.id,
+    this.rank,
+    this.type = MediaRankType.none,
+    this.format = MediaFormat.none,
+    this.year,
+    this.season = MediaSeason.none,
+    this.allTime,
+    this.context,
+  });
+
+  factory MediaRanking.fromJson(Map<String, dynamic> json) => MediaRanking(
+        id: json["id"],
+        rank: json["rank"],
+        type: MediaRankType.fromString('${json["type"]}'),
+        format: MediaFormat.fromString('${json["format"]}'),
+        year: json["year"],
+        season: MediaSeason.fromString('${json["season"]}'),
+        allTime: json["allTime"],
+        context: json["context"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "rank": rank,
+        "type": type,
+        "format": format,
+        "year": year,
+        "season": season,
+        "allTime": allTime,
+        "context": context,
+      };
+}
+
+class MediaStaffDetails {
+  final List<StaffData> edges;
+
+  MediaStaffDetails({
+    this.edges = const [],
+  });
+
+  factory MediaStaffDetails.fromJson(Map<String, dynamic> json) =>
+      MediaStaffDetails(
+        edges: json["edges"] == null
+            ? []
+            : List<StaffData>.from(
+                json["edges"]!.map((x) => StaffData.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "edges": edges.map((x) => x.toJson()).toList(),
+      };
+}
+
+class StaffData {
+  final Staff? node;
+  final String? role;
+
+  StaffData({
+    this.node,
+    this.role,
+  });
+
+  factory StaffData.fromJson(Map<String, dynamic> json) => StaffData(
+        node: json["node"] == null ? null : Staff.fromJson(json["node"]),
+        role: json["role"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "node": node?.toJson(),
+        "role": role,
+      };
+}
+
+class Staff {
+  final EntityName? name;
+  final int? id;
+  final EntityImage? image;
+  final String? description;
+
+  Staff({
+    this.name,
+    this.id,
+    this.image,
+    this.description,
+  });
+
+  factory Staff.fromJson(Map<String, dynamic> json) => Staff(
+        name: json["name"] == null ? null : EntityName.fromJson(json["name"]),
+        id: json["id"],
+        image:
+            json["image"] == null ? null : EntityImage.fromJson(json["image"]),
+        description: json["description"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name?.toJson(),
+        "id": id,
+        "image": image?.toJson(),
+        "description": description,
       };
 }

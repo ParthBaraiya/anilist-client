@@ -10,6 +10,7 @@ class AniListTheme {
     scaffoldBackground: Color(0xFF191825),
     dialogBackground: Color(0xFF2C2846),
     textFieldBackground: Color(0xFF191825),
+    dialogSecondaryBackground: Color(0xff523b8c),
     textFieldTextColor: Color(0xEEEAFFFF),
     textFieldFocusedTextColor: Color(0xEEEAFFFF),
     titleLargeColor: Color(0xEEEAFFFF),
@@ -23,6 +24,7 @@ class AniListTheme {
   // Background Colors
   final Color scaffoldBackground;
   final Color dialogBackground;
+  final Color dialogSecondaryBackground;
   final Color textFieldBackground;
 
   // Text colors.
@@ -47,10 +49,35 @@ class AniListTheme {
     required this.bodyTextColor,
     required this.captionTextColor,
     required this.buttonTextColor,
+    required this.dialogSecondaryBackground,
   });
 
   TextStyle get buttonTextStyle => TextStyle(
         color: buttonTextColor,
+        fontFamily: AniListFontFamily.comfortaa,
+      );
+
+  TextStyle get bodyLargeTextStyle => TextStyle(
+        color: bodyTextColor,
+        fontSize: 16,
+        fontFamily: AniListFontFamily.comfortaa,
+      );
+
+  TextStyle get bodyTextStyle => TextStyle(
+        color: bodyTextColor,
+        fontSize: 14,
+        fontFamily: AniListFontFamily.comfortaa,
+      );
+
+  TextStyle get captionTextStyle => TextStyle(
+        color: captionTextColor,
+        fontSize: 12,
+        fontFamily: AniListFontFamily.comfortaa,
+      );
+
+  TextStyle get titleSmallTextStyle => TextStyle(
+        color: titleSmallColor,
+        fontSize: 24,
         fontFamily: AniListFontFamily.comfortaa,
       );
 
@@ -64,23 +91,6 @@ class AniListTheme {
         fontSize: 36,
         letterSpacing: 1.3,
         fontWeight: FontWeight.w600,
-        fontFamily: AniListFontFamily.comfortaa,
-      );
-
-  TextStyle get bodyTextStyle => TextStyle(
-        color: bodyTextColor,
-        fontFamily: AniListFontFamily.comfortaa,
-      );
-
-  TextStyle get captionTextStyle => TextStyle(
-        color: captionTextColor,
-        fontSize: 12,
-        fontFamily: AniListFontFamily.comfortaa,
-      );
-
-  TextStyle get titleSmallTextStyle => TextStyle(
-        color: titleSmallColor,
-        fontSize: 24,
         fontFamily: AniListFontFamily.comfortaa,
       );
 
