@@ -14,7 +14,7 @@ import 'package:anilist_client/utilities/extensions/datetime.dart';
 import 'package:anilist_client/utilities/extensions/string.dart';
 import 'package:anilist_client/view/custom_painters/percentage_painter.dart';
 import 'package:anilist_client/view/scaffolds/animwatch_default_scaffold.dart';
-import 'package:anilist_client/view/titles/section_title.dart';
+import 'package:anilist_client/view/titles/ani_watch_section_title.dart';
 import 'package:anilist_client/view/tooltips/anilist_tooltip.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

@@ -24,10 +24,14 @@ class AniWatchSectionTitle extends StatelessWidget {
         if (onSeeMore != null)
           InkWell(
             onTap: onSeeMore,
-            child: Icon(
-              Icons.chevron_right_rounded,
-              color: AppConfig.theme.titleSmallTextStyle.color,
-              size: 30,
+            borderRadius: BorderRadius.circular(200),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Icon(
+                Icons.chevron_right_rounded,
+                color: AppConfig.theme.titleSmallTextStyle.color,
+                size: 30,
+              ),
             ),
           ),
       ],
