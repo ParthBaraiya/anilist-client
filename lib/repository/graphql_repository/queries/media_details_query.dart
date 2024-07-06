@@ -187,7 +187,7 @@ class MediaDetailsQuery extends GraphqlQuery {
         season
         allTime
       }
-      staff(page: 1, perPage: 5) {
+      staff(page: 1, perPage: 10) {
         edges {
           node {
             name {
