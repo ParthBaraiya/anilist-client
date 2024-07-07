@@ -2,8 +2,8 @@ import 'package:anilist_client/repository/graphql_repository/responses/anime_det
 import 'package:anilist_client/view/tiles/image_tile_with_backdrop_filtered_title.dart';
 import 'package:flutter/material.dart';
 
-class AnimeStaffTile extends StatelessWidget {
-  const AnimeStaffTile({
+class AnimeStaffTitle extends StatelessWidget {
+  const AnimeStaffTitle({
     super.key,
     required this.staff,
     required this.onTap,

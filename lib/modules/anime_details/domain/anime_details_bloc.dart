@@ -1,5 +1,5 @@
 import 'package:anilist_client/modules/anime_details/data/anime_details_data_store.dart';
-import 'package:anilist_client/modules/anime_details/domain/anime_details_event.dart';
+import 'package:anilist_client/modules/anime_details/domain/anime_details_events.dart';
 import 'package:anilist_client/modules/anime_details/domain/anime_details_state.dart';
 import 'package:bloc/bloc.dart';
 
@@ -17,6 +17,8 @@ class AnimeDetailsBloc extends Bloc<AnimeDetailsEvent, AnimeDetailsState> {
     if (state.state.isLoading) return;
 
     emit(AnimeDetailsState.loading(details: _datastore.details));
+
+    await Future.delayed(Duration(seconds: 5));
 
     final details = await _datastore.fetchDetails();
 

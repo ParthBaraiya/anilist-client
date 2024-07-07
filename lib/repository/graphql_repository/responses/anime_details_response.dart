@@ -14,51 +14,53 @@ class MediaDetails {
   final int? id;
   final int? idMal;
   final MediaTitle? title;
-  final MediaType type;
+  final MediaType type; // TODO(parth): Add this to UI.
   final MediaFormat format;
   final MediaStatus status;
   final String? description;
   final AniListDate? startDate;
   final AniListDate? endDate;
-  final String? countryOfOrigin;
-  final bool? isLicensed;
+  final String? countryOfOrigin; // TODO(parth): Add this to UI.
+  final bool? isLicensed; // TODO(parth): Add this to UI.
   final MediaSource source;
   final String? hashtag;
-  final int? updatedAt;
+  final int? updatedAt; // No need to include this...
   final CoverImage? coverImage;
-  final String? bannerImage;
+  final String? bannerImage; // No Need to include this...
   final List<String> genres;
-  final List<String>? synonyms;
+  final List<String> synonyms;
   final int? averageScore;
   final int? meanScore;
-  final int? popularity;
-  final int? trending;
-  final int? favourites;
-  final List<Tag> tags;
-  final String? siteUrl;
+  final int? popularity; // TODO(parth): Add this to UI.
+  final int? trending; // TODO(parth): Add this to UI.
+  final int? favourites; // TODO(parth): Add this to UI.
+  final List<Tag> tags; // TODO(parth): Add this to UI.
+  final String? siteUrl; // TODO(parth): Add this to UI.
 
   // Only for anime...
-  final String? season;
-  final int? seasonYear;
-  final int? seasonInt;
+  final String? season; // TODO(parth): Add this to UI.
+  final int? seasonYear; // TODO(parth): Add this to UI.
+  final int? seasonInt; // TODO(parth): Add this to UI.
   final int? episodes;
-  final int? duration;
+  final Trailer? trailer; // TODO(parth): Add this to UI.
 
-  final dynamic nextAiringEpisode;
-  final AiringSchedule? airingSchedule;
+  /// General length of an anime in minutes.
+  final int? duration; // TODO(parth): Add this to UI.
+
+  final dynamic nextAiringEpisode; // TODO(parth): Add this to UI.
+  final AiringSchedule? airingSchedule; // TODO(parth): Add this to UI.
 
   // Only for manga or novels...
   final int? chapters;
   final int? volumes;
-  final Trailer? trailer;
 
-  final bool? isLocked;
+  final bool? isLocked; // TODO(parth): Add this to UI.
   final Relations? relations;
   final Characters? characters;
-  final Studios? studios;
-  final bool? isFavourite;
+  final Studios? studios; // TODO(parth): Add this to UI.
+  final bool? isFavourite; // TODO(parth): Add this to UI.
   final bool? isAdult;
-  final List<ExternalLink>? externalLinks;
+  final List<ExternalLink> externalLinks;
   final List<MediaRanking> rankings;
   final MediaStaffDetails? staff;
 
@@ -88,7 +90,7 @@ class MediaDetails {
     this.coverImage,
     this.bannerImage,
     this.genres = const [],
-    this.synonyms,
+    this.synonyms = const [],
     this.averageScore,
     this.meanScore,
     this.popularity,
@@ -103,7 +105,7 @@ class MediaDetails {
     this.isAdult,
     this.nextAiringEpisode,
     this.airingSchedule,
-    this.externalLinks,
+    this.externalLinks = const [],
     this.siteUrl,
     this.rankings = const [],
     this.staff,
@@ -145,9 +147,7 @@ class MediaDetails {
         genres: json["genres"] == null
             ? []
             : List<String>.from(json["genres"]!.map((x) => x)),
-        synonyms: json["synonyms"] == null
-            ? []
-            : List<String>.from(json["synonyms"]!.map((x) => x)),
+        synonyms: (json["synonyms"] as List?)?.cast<String>() ?? [],
         averageScore: json["averageScore"],
         meanScore: json["meanScore"],
         popularity: json["popularity"],
@@ -264,9 +264,8 @@ class MediaDetails {
         "updatedAt": updatedAt,
         "coverImage": coverImage?.toJson(),
         "bannerImage": bannerImage,
-        "genres": genres.map((x) => x).toList(),
-        "synonyms":
-            synonyms == null ? [] : List<dynamic>.from(synonyms!.map((x) => x)),
+        "genres": genres,
+        "synonyms": synonyms,
         "averageScore": averageScore,
         "meanScore": meanScore,
         "popularity": popularity,
@@ -281,9 +280,7 @@ class MediaDetails {
         "isAdult": isAdult,
         "nextAiringEpisode": nextAiringEpisode,
         "airingSchedule": airingSchedule?.toJson(),
-        "externalLinks": externalLinks == null
-            ? []
-            : List<dynamic>.from(externalLinks!.map((x) => x.toJson())),
+        "externalLinks": externalLinks.map((x) => x.toJson()).toList(),
         "siteUrl": siteUrl,
         "staff": staff?.toJson(),
       };
