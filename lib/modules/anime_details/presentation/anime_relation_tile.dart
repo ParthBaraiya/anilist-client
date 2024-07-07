@@ -21,7 +21,7 @@ class AnimeRelationTile extends StatelessWidget {
         imageUrl: relation.node?.coverImage?.medium ?? 'N/A',
         title: relation.relationType.display.capitalized,
         backdropColor:
-            relation.node!.coverImage!.color!.toColor.withOpacity(0.2),
+            relation.node!.coverImage!.color?.toColor.withOpacity(0.2),
       ),
     );
   }

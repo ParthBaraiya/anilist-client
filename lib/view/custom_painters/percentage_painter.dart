@@ -16,7 +16,9 @@ class PercentagePainter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _PercentagePainter(percentage),
+      painter: _PercentagePainter(
+        percentage: percentage,
+      ),
       child: child,
     );
   }
@@ -25,12 +27,17 @@ class PercentagePainter extends StatelessWidget {
 class _PercentagePainter extends CustomPainter {
   /// Must be between 0 to 100.
   final int percentage;
+  final double strokeWidth;
 
-  _PercentagePainter(this.percentage);
+  _PercentagePainter({
+    required this.percentage,
+    this.strokeWidth = 8.0,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Offset.zero & size;
+    final s = (size - Offset(strokeWidth, strokeWidth)) as Size;
+    final rect = (Offset.zero & s).translate(strokeWidth / 2, strokeWidth / 2);
 
     canvas.drawArc(
       rect,
@@ -40,7 +47,7 @@ class _PercentagePainter extends CustomPainter {
       Paint()
         ..color = MediaSatisfaction.fromInt(percentage).color
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 8,
+        ..strokeWidth = strokeWidth,
     );
   }
 

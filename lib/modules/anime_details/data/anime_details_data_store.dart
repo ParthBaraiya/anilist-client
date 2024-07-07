@@ -13,7 +13,7 @@ class AnimeDetailsDataStore {
 
   Future<MediaDetails> fetchDetails() async {
     details =
-        await AppConfig.repository.getMediaById(MediaDetailsQuery(id: id));
+        await AppConfig.repository.getMediaById(MediaDetailsQuery(id: 21));
 
     return details!;
   }

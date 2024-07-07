@@ -67,7 +67,8 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
 
             return NotificationListener<ScrollNotification>(
               onNotification: (notification) {
-                if (notification.metrics.axis == Axis.vertical) {
+                if (notification.metrics.axis == Axis.vertical &&
+                    !notification.metrics.atEdge) {
                   _position.value = notification.metrics.pixels;
                 }
 
@@ -345,59 +346,59 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Text(
-                                "Tags",
-                                style: AppConfig.theme.titleSmallTextStyle,
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(vertical: 30),
-                              child: SizedBox(
-                                height: 130,
-                                child: ListView.separated(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  scrollDirection: Axis.horizontal,
-                                  separatorBuilder: (_, __) =>
-                                      SizedBox(width: 30),
-                                  itemBuilder: (_, index) {
-                                    final tag = details.tags[index];
-
-                                    return AniWatchTooltip(
-                                      message: tag.description ?? 'N/A',
-                                      child: Column(
-                                        children: [
-                                          PercentagePainter(
-                                            child: SizedBox.square(
-                                              dimension: 80,
-                                              child: Center(
-                                                child: Text(
-                                                  "${tag.rank ?? 0} %",
-                                                  style: AppConfig
-                                                      .theme.bodyLargeTextStyle,
-                                                ),
-                                              ),
-                                            ),
-                                            percentage: (tag.rank ?? 0),
-                                          ),
-                                          SizedBox(height: 20),
-                                          Text(
-                                            tag.name ?? 'N/A',
-                                            style: AppConfig
-                                                .theme.bodyLargeTextStyle
-                                                .copyWith(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                  itemCount: details.genres.length,
+                            if (details.tags.isNotEmpty) ...[
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  "Tags",
+                                  style: AppConfig.theme.titleSmallTextStyle,
                                 ),
                               ),
-                            ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 30),
+                                child: SizedBox(
+                                  height: 130,
+                                  child: ListView.separated(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    scrollDirection: Axis.horizontal,
+                                    separatorBuilder: (_, __) =>
+                                        SizedBox(width: 30),
+                                    itemBuilder: (_, index) {
+                                      final tag = details.tags[index];
+
+                                      return AniWatchTooltip(
+                                        message: tag.description ?? 'N/A',
+                                        child: Column(
+                                          children: [
+                                            PercentagePainter(
+                                              child: SizedBox.square(
+                                                dimension: 80,
+                                                child: Center(
+                                                  child: Text(
+                                                    "${tag.rank ?? 0} %",
+                                                    style: AppConfig.theme
+                                                        .bodyLargeTextStyle,
+                                                  ),
+                                                ),
+                                              ),
+                                              percentage: (tag.rank ?? 0),
+                                            ),
+                                            SizedBox(height: 20),
+                                            Text(
+                                              tag.name ?? 'N/A',
+                                              style: AppConfig
+                                                  .theme.bodyLargeTextStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                    itemCount: details.genres.length,
+                                  ),
+                                ),
+                              ),
+                            ],
                             if (details.rankings.isNotEmpty) ...[
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -581,7 +582,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                               ),
                               SizedBox(height: 20),
                             ],
-                            if (details.studios?.nodes?.isNotEmpty ??
+                            if (details.studios?.edges?.isNotEmpty ??
                                 false) ...[
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -592,6 +593,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                                   },
                                 ),
                               ),
+                              // TODO(parth): If possible create a separate SliverList.
                               ListView.separated(
                                 separatorBuilder: (_, __) =>
                                     SizedBox(height: 20),
@@ -599,44 +601,34 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                                   vertical: 20,
                                   horizontal: 20,
                                 ),
+                                physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (_, index) {
-                                  final studio = details.studios!.nodes![index];
+                                  final studio = details.studios!.edges![index];
 
+                                  // TODO(parth): add link that will navigate
+                                  //  to listing screen for anime produced by
+                                  //  this studio.
                                   return RichText(
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: '${studio.name ?? 'N/A'}   ',
+                                          text:
+                                              '${studio.node?.name ?? 'N/A'}   ',
                                           style: AppConfig
                                               .theme.textFieldTextStyle,
                                         ),
-                                        // if (link.language != null)
-                                        //   TextSpan(
-                                        //     text:
-                                        //         '${link.language ?? 'N/A'}    ',
-                                        //     style: AppConfig
-                                        //         .theme.captionTextStyle,
-                                        //   ),
-                                        // if (link.url != null)
-                                        //   WidgetSpan(
-                                        //     child: InkWell(
-                                        //       onTap: () {
-                                        //         // TODO(parth): navigate to site.
-                                        //       },
-                                        //       child: Icon(
-                                        //         Icons.open_in_new_rounded,
-                                        //         color: AppConfig.theme
-                                        //             .dialogSecondaryBackground,
-                                        //         size: 22,
-                                        //       ),
-                                        //     ),
-                                        //   )
+                                        if (studio.isMain ?? false)
+                                          TextSpan(
+                                            text: "Main",
+                                            style: AppConfig
+                                                .theme.captionTextStyle,
+                                          ),
                                       ],
                                     ),
                                   );
                                 },
-                                itemCount: details.studios!.nodes!.length,
+                                itemCount: details.studios!.edges!.length,
                               ),
                               SizedBox(height: 20),
                             ],
@@ -655,6 +647,7 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                                   horizontal: 20,
                                 ),
                                 shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
                                 itemBuilder: (_, index) {
                                   final link = details.externalLinks[index];
 

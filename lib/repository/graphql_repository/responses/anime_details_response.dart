@@ -564,63 +564,6 @@ class Date {
       };
 }
 
-class Studios {
-  final List<MediaStudio>? nodes;
-
-  Studios({
-    this.nodes,
-  });
-
-  factory Studios.fromJson(Map<String, dynamic> json) => Studios(
-        nodes: json["nodes"] == null
-            ? []
-            : List<MediaStudio>.from(
-                json["nodes"]!.map((x) => MediaStudio.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "nodes": nodes == null
-            ? []
-            : List<dynamic>.from(nodes!.map((x) => x.toJson())),
-      };
-}
-
-class MediaStudio {
-  final int? id;
-  final String? name;
-  final bool? isFavourite;
-  final bool? isAnimationStudio;
-  final String? siteUrl;
-  final int? favourites;
-
-  MediaStudio({
-    this.id,
-    this.name,
-    this.isFavourite,
-    this.isAnimationStudio,
-    this.siteUrl,
-    this.favourites,
-  });
-
-  factory MediaStudio.fromJson(Map<String, dynamic> json) => MediaStudio(
-        id: json["id"],
-        name: json["name"],
-        isFavourite: json["isFavourite"],
-        isAnimationStudio: json["isAnimationStudio"],
-        siteUrl: json["siteUrl"],
-        favourites: json["favourites"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "isFavourite": isFavourite,
-        "isAnimationStudio": isAnimationStudio,
-        "siteUrl": siteUrl,
-        "favourites": favourites,
-      };
-}
-
 class Tag {
   final int? id;
   final String? name;
@@ -799,5 +742,83 @@ class Staff {
         "id": id,
         "image": image?.toJson(),
         "description": description,
+      };
+}
+
+class Studios {
+  final List<MediaStudioData>? edges;
+
+  Studios({
+    this.edges,
+  });
+
+  factory Studios.fromJson(Map<String, dynamic> json) => Studios(
+        edges: json["edges"] == null
+            ? []
+            : List<MediaStudioData>.from(
+                json["edges"]!.map((x) => MediaStudioData.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "edges": edges == null
+            ? []
+            : List<dynamic>.from(edges!.map((x) => x.toJson())),
+      };
+}
+
+class MediaStudioData {
+  final bool? isMain;
+  final MediaStudio? node;
+
+  MediaStudioData({
+    this.isMain,
+    this.node,
+  });
+
+  factory MediaStudioData.fromJson(Map<String, dynamic> json) =>
+      MediaStudioData(
+        isMain: json["isMain"],
+        node: json["node"] == null ? null : MediaStudio.fromJson(json["node"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "isMain": isMain,
+        "node": node?.toJson(),
+      };
+}
+
+class MediaStudio {
+  final int? id;
+  final String? name;
+  final bool? isFavourite;
+  final bool? isAnimationStudio;
+  final String? siteUrl;
+  final int? favourites;
+
+  MediaStudio({
+    this.id,
+    this.name,
+    this.isFavourite,
+    this.isAnimationStudio,
+    this.siteUrl,
+    this.favourites,
+  });
+
+  factory MediaStudio.fromJson(Map<String, dynamic> json) => MediaStudio(
+        id: json["id"],
+        name: json["name"],
+        isFavourite: json["isFavourite"],
+        isAnimationStudio: json["isAnimationStudio"],
+        siteUrl: json["siteUrl"],
+        favourites: json["favourites"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "isFavourite": isFavourite,
+        "isAnimationStudio": isAnimationStudio,
+        "siteUrl": siteUrl,
+        "favourites": favourites,
       };
 }

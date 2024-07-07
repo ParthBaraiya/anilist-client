@@ -140,13 +140,16 @@ class MediaDetailsQuery extends GraphqlQuery {
         }
       }
       studios {
-        nodes {
-          id
-          name
-          isFavourite
-          isAnimationStudio
-          siteUrl
-          favourites
+        edges {
+          isMain
+          node {
+            id
+            name
+            isFavourite
+            isAnimationStudio
+            siteUrl
+            favourites
+          }
         }
       }
       isFavourite
