@@ -18,8 +18,6 @@ class AnimeDetailsBloc extends Bloc<AnimeDetailsEvent, AnimeDetailsState> {
 
     emit(AnimeDetailsState.loading(details: _datastore.details));
 
-    await Future.delayed(Duration(seconds: 5));
-
     final details = await _datastore.fetchDetails();
 
     emit(AnimeDetailsState.success(details: details));
