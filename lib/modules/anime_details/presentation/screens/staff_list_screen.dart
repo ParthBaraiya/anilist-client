@@ -18,9 +18,8 @@ class MediaStaffListScreen extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            AniWatchPageTitle(
-              title: 'Characters',
-            ),
+            AniWatchPageTitle(),
+              title: 'Staff',
             Expanded(
               child: GridView.builder(
                 padding: EdgeInsets.only(
