@@ -1,11 +1,15 @@
 import 'package:anilist_client/modules/anime_details/domain/anime_details_bloc.dart';
-import 'package:anilist_client/modules/anime_details/presentation/anime_details_screen.dart';
+import 'package:anilist_client/modules/anime_details/presentation/screens/anime_details_screen.dart';
+import 'package:anilist_client/modules/anime_details/presentation/screens/character_list_screen.dart';
+import 'package:anilist_client/modules/anime_details/presentation/screens/staff_list_screen.dart';
 import 'package:anilist_client/modules/home/home_screen.dart';
 import 'package:anilist_client/modules/search/domain/search_bloc.dart';
 import 'package:anilist_client/modules/search/presentation/search_screen.dart';
 import 'package:anilist_client/modules/utility_screens/page_not_found.dart';
 import 'package:anilist_client/services/navigation_service/app_pages.dart';
 import 'package:anilist_client/services/navigation_service/arguments/anime_details_route_argument.dart';
+import 'package:anilist_client/services/navigation_service/arguments/character_list_route_argument.dart';
+import 'package:anilist_client/services/navigation_service/arguments/staff_list_route_argument.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,6 +70,19 @@ class NavigationService {
           widgetBuilder: (_, args) => BlocProvider(
             create: (_) => AnimeDetailsBloc(id: args.id),
             child: AnimeDetailsScreen(),
+          ),
+        );
+      case AppPages.characterList:
+        return generateRoute<CharacterListRouteArgument, void>(
+          widgetBuilder: (_, args) => CharacterListScreen(
+            characters: args.characters,
+          ),
+        );
+
+      case AppPages.staffList:
+        return generateRoute<StaffListRouteArgument, void>(
+          widgetBuilder: (_, args) => MediaStaffListScreen(
+            staffDetails: args.staff,
           ),
         );
       default:

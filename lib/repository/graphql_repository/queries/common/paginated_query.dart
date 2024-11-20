@@ -1,4 +1,4 @@
-import 'package:anilist_client/repository/graphql_repository/queries/graphql_query.dart';
+import 'package:anilist_client/repository/graphql_repository/queries/common/graphql_query.dart';
 
 abstract class PaginatedGraphQlQuery extends GraphqlQuery {
   const PaginatedGraphQlQuery();

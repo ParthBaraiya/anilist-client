@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:anilist_client/repository/graphql_repository/queries/anime_brief_list_query.dart';
-import 'package:anilist_client/repository/graphql_repository/queries/graphql_query.dart';
+import 'package:anilist_client/repository/graphql_repository/queries/anime_staff_details_query.dart';
+import 'package:anilist_client/repository/graphql_repository/queries/common/graphql_query.dart';
 import 'package:anilist_client/repository/graphql_repository/queries/media_details_query.dart';
 import 'package:anilist_client/repository/graphql_repository/repository_base.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/anime_details_response.dart';
@@ -36,6 +37,19 @@ class ApiRepository extends ApiRepositoryBase {
     }
 
     return SearchAnimeResponse.fromJson(json);
+  }
+
+  @override
+  Future<MediaStaff> listStaffForMedia(MediaStaffListQuery query) async {
+    final response = await _sendRequest(query);
+    final json = jsonDecode(response)['data']?['Media']['staff'];
+
+    if (json == null) {
+      throw 'Error parsing anime list please try to update '
+          'the app to the latest version.';
+    }
+
+    return MediaStaff.fromJson(json);
   }
 
   Future<String> _sendRequest(

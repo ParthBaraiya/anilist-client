@@ -1,8 +1,8 @@
 import 'package:anilist_client/core/app_config.dart';
+import 'package:anilist_client/repository/graphql_repository/responses/character_details_response.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/anilist_date.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/cover_image.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/entity_image.dart';
-import 'package:anilist_client/repository/graphql_repository/responses/common/entity_name.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/external_link.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/common/title.dart';
 import 'package:anilist_client/repository/graphql_repository/responses/enum/enums.dart';
@@ -62,7 +62,7 @@ class MediaDetails {
   final bool? isAdult;
   final List<ExternalLink> externalLinks;
   final List<MediaRanking> rankings;
-  final MediaStaffDetails? staff;
+  final MediaStaff? staff;
 
   MediaDetails({
     this.id,
@@ -180,9 +180,8 @@ class MediaDetails {
             ? []
             : List<MediaRanking>.from(
                 json["rankings"]!.map((x) => MediaRanking.fromJson(x))),
-        staff: json["staff"] == null
-            ? null
-            : MediaStaffDetails.fromJson(json["staff"]),
+        staff:
+            json["staff"] == null ? null : MediaStaff.fromJson(json["staff"]),
       );
 
   MediaSatisfaction get satisfaction =>
@@ -355,86 +354,6 @@ class Characters {
       };
 }
 
-class CharacterMeta {
-  final CharacterRole role;
-  final dynamic name;
-  final List<dynamic>? voiceActors;
-  final List<dynamic>? voiceActorRoles;
-  final dynamic favouriteOrder;
-  final CharacterDetails? node;
-
-  CharacterMeta({
-    this.role = CharacterRole.none,
-    this.name,
-    this.voiceActors,
-    this.voiceActorRoles,
-    this.favouriteOrder,
-    this.node,
-  });
-
-  factory CharacterMeta.fromJson(Map<String, dynamic> json) => CharacterMeta(
-        role: CharacterRole.fromString('${json["role"]}'),
-        name: json["name"],
-        voiceActors: json["voiceActors"] == null
-            ? []
-            : List<dynamic>.from(json["voiceActors"]!.map((x) => x)),
-        voiceActorRoles: json["voiceActorRoles"] == null
-            ? []
-            : List<dynamic>.from(json["voiceActorRoles"]!.map((x) => x)),
-        favouriteOrder: json["favouriteOrder"],
-        node: json["node"] == null
-            ? null
-            : CharacterDetails.fromJson(json["node"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "role": '${role}',
-        "name": name,
-        "voiceActors": voiceActors == null
-            ? []
-            : List<dynamic>.from(voiceActors!.map((x) => x)),
-        "voiceActorRoles": voiceActorRoles == null
-            ? []
-            : List<dynamic>.from(voiceActorRoles!.map((x) => x)),
-        "favouriteOrder": favouriteOrder,
-        "node": node?.toJson(),
-      };
-}
-
-class CharacterDetails {
-  final int? id;
-  final EntityName? name;
-  final String? gender;
-  final String? age;
-  final EntityImage? image;
-
-  CharacterDetails({
-    this.id,
-    this.name,
-    this.gender,
-    this.age,
-    this.image,
-  });
-
-  factory CharacterDetails.fromJson(Map<String, dynamic> json) =>
-      CharacterDetails(
-        id: json["id"],
-        name: json["name"] == null ? null : EntityName.fromJson(json["name"]),
-        gender: json["gender"],
-        age: json["age"],
-        image:
-            json["image"] == null ? null : EntityImage.fromJson(json["image"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name?.toJson(),
-        "gender": gender,
-        "age": age,
-        "image": image?.toJson(),
-      };
-}
-
 class Relations {
   final List<MediaRelation> edges;
 
@@ -454,74 +373,17 @@ class Relations {
       };
 }
 
-class MediaRelation {
-  final int? id;
-  final MediaRelationType relationType;
-  final bool? isMainStudio;
-  final RelationMedia? node;
-
-  MediaRelation({
-    this.id,
-    this.relationType = MediaRelationType.none,
-    this.isMainStudio,
-    this.node,
-  });
-
-  factory MediaRelation.fromJson(Map<String, dynamic> json) => MediaRelation(
-        id: json["id"],
-        relationType: MediaRelationType.fromString('${json["relationType"]}'),
-        isMainStudio: json["isMainStudio"],
-        node:
-            json["node"] == null ? null : RelationMedia.fromJson(json["node"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "relationType": relationType.display,
-        "isMainStudio": isMainStudio,
-        "node": node?.toJson(),
-      };
-}
-
 class RelationMedia {
   final int? id;
-  final MediaTitle? title;
-  final List<String>? genres;
-  final MediaType type;
-  final MediaStatus status;
-  final MediaSource source;
-  final AniListDate? startDate;
-  final AniListDate? endDate;
   final CoverImage? coverImage;
 
   RelationMedia({
     this.id,
-    this.title,
-    this.genres,
-    this.type = MediaType.none,
-    this.status = MediaStatus.none,
-    this.source = MediaSource.none,
-    this.startDate,
-    this.endDate,
     this.coverImage,
   });
 
   factory RelationMedia.fromJson(Map<String, dynamic> json) => RelationMedia(
         id: json["id"],
-        title:
-            json["title"] == null ? null : MediaTitle.fromJson(json["title"]),
-        genres: json["genres"] == null
-            ? []
-            : List<String>.from(json["genres"]!.map((x) => x)),
-        type: MediaType.fromString('${json["type"]}'),
-        status: MediaStatus.fromString('${json["status"]}'),
-        source: MediaSource.fromString('${json["source"]}'),
-        startDate: json["startDate"] == null
-            ? null
-            : AniListDate.fromJson(json["startDate"]),
-        endDate: json["endDate"] == null
-            ? null
-            : AniListDate.fromJson(json["endDate"]),
         coverImage: json["coverImage"] == null
             ? null
             : CoverImage.fromJson(json["coverImage"]),
@@ -529,38 +391,6 @@ class RelationMedia {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "title": title?.toJson(),
-        "genres":
-            genres == null ? [] : List<dynamic>.from(genres!.map((x) => x)),
-        "type": '$type',
-        "status": '$status',
-        "source": '$source',
-        "startDate": startDate?.toJson(),
-        "endDate": endDate?.toJson(),
-      };
-}
-
-class Date {
-  final int? year;
-  final int? month;
-  final int? day;
-
-  Date({
-    this.year,
-    this.month,
-    this.day,
-  });
-
-  factory Date.fromJson(Map<String, dynamic> json) => Date(
-        year: json["year"],
-        month: json["month"],
-        day: json["day"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "year": year,
-        "month": month,
-        "day": day,
       };
 }
 
@@ -676,75 +506,6 @@ class MediaRanking {
       };
 }
 
-class MediaStaffDetails {
-  final List<StaffData> edges;
-
-  MediaStaffDetails({
-    this.edges = const [],
-  });
-
-  factory MediaStaffDetails.fromJson(Map<String, dynamic> json) =>
-      MediaStaffDetails(
-        edges: json["edges"] == null
-            ? []
-            : List<StaffData>.from(
-                json["edges"]!.map((x) => StaffData.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "edges": edges.map((x) => x.toJson()).toList(),
-      };
-}
-
-class StaffData {
-  final Staff? node;
-  final String? role;
-
-  StaffData({
-    this.node,
-    this.role,
-  });
-
-  factory StaffData.fromJson(Map<String, dynamic> json) => StaffData(
-        node: json["node"] == null ? null : Staff.fromJson(json["node"]),
-        role: json["role"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "node": node?.toJson(),
-        "role": role,
-      };
-}
-
-class Staff {
-  final EntityName? name;
-  final int? id;
-  final EntityImage? image;
-  final String? description;
-
-  Staff({
-    this.name,
-    this.id,
-    this.image,
-    this.description,
-  });
-
-  factory Staff.fromJson(Map<String, dynamic> json) => Staff(
-        name: json["name"] == null ? null : EntityName.fromJson(json["name"]),
-        id: json["id"],
-        image:
-            json["image"] == null ? null : EntityImage.fromJson(json["image"]),
-        description: json["description"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "name": name?.toJson(),
-        "id": id,
-        "image": image?.toJson(),
-        "description": description,
-      };
-}
-
 class Studios {
   final List<MediaStudioData>? edges;
 
@@ -820,5 +581,112 @@ class MediaStudio {
         "isAnimationStudio": isAnimationStudio,
         "siteUrl": siteUrl,
         "favourites": favourites,
+      };
+}
+
+class Staff {
+  final int? id;
+  final EntityImage? image;
+
+  Staff({
+    this.id,
+    this.image,
+  });
+
+  factory Staff.fromJson(Map<String, dynamic> json) => Staff(
+        id: json["id"],
+        image:
+            json["image"] == null ? null : EntityImage.fromJson(json["image"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "image": image?.toJson(),
+      };
+}
+
+class MediaStaff {
+  final List<StaffData> edges;
+
+  MediaStaff({
+    this.edges = const [],
+  });
+
+  factory MediaStaff.fromJson(Map<String, dynamic> json) => MediaStaff(
+        edges: json["edges"] == null
+            ? []
+            : List<StaffData>.from(
+                json["edges"]!.map((x) => StaffData.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "edges": edges.map((x) => x.toJson()).toList(),
+      };
+}
+
+class StaffData {
+  final Staff? node;
+  final String? role;
+
+  StaffData({
+    this.node,
+    this.role,
+  });
+
+  factory StaffData.fromJson(Map<String, dynamic> json) => StaffData(
+        node: json["node"] == null ? null : Staff.fromJson(json["node"]),
+        role: json["role"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "node": node?.toJson(),
+        "role": role,
+      };
+}
+
+class MediaRelation {
+  final int? id;
+  final MediaRelationType relationType;
+  final RelationMedia? node;
+
+  MediaRelation({
+    this.id,
+    this.relationType = MediaRelationType.none,
+    this.node,
+  });
+
+  factory MediaRelation.fromJson(Map<String, dynamic> json) => MediaRelation(
+        id: json["id"],
+        relationType: MediaRelationType.fromString('${json["relationType"]}'),
+        node:
+            json["node"] == null ? null : RelationMedia.fromJson(json["node"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "relationType": relationType.display,
+        "node": node?.toJson(),
+      };
+}
+
+class CharacterMeta {
+  final CharacterRole role;
+  final CharacterDetails? node;
+
+  CharacterMeta({
+    this.role = CharacterRole.none,
+    this.node,
+  });
+
+  factory CharacterMeta.fromJson(Map<String, dynamic> json) => CharacterMeta(
+        role: CharacterRole.fromString('${json["role"]}'),
+        node: json["node"] == null
+            ? null
+            : CharacterDetails.fromJson(json["node"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "role": '${role}',
+        "node": node?.toJson(),
       };
 }

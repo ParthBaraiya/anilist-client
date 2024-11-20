@@ -35,6 +35,7 @@ class ImageTileWithBackdropFilteredTitle extends StatelessWidget {
                 title,
                 style: AppConfig.theme.bodyTextStyle.copyWith(
                   fontWeight: FontWeight.bold,
+                  color: AppConfig.theme.textFieldBackground,
                 ),
                 textAlign: TextAlign.center,
                 maxLines: 2,

@@ -17,6 +17,7 @@ class AniListTheme {
     titleMediumColor: Color(0xEEEAFFFF),
     titleSmallColor: Color(0xEEEAFFFF),
     bodyTextColor: Color(0xEEEAFFFF),
+    bodyTextColorDark: Color(0xFFD0D0D0),
     captionTextColor: Color(0xEEEAFFFF),
     buttonTextColor: Color(0xEEEAFFFF),
   );
@@ -34,6 +35,7 @@ class AniListTheme {
   final Color titleMediumColor;
   final Color titleSmallColor;
   final Color bodyTextColor;
+  final Color bodyTextColorDark;
   final Color captionTextColor;
   final Color buttonTextColor;
 
@@ -50,6 +52,7 @@ class AniListTheme {
     required this.captionTextColor,
     required this.buttonTextColor,
     required this.dialogSecondaryBackground,
+    required this.bodyTextColorDark,
   });
 
   TextStyle get buttonTextStyle => TextStyle(
@@ -81,12 +84,15 @@ class AniListTheme {
         fontFamily: AniListFontFamily.comfortaa,
       );
 
-  TextStyle get titleLargeTextStyle => TextStyle(
+  TextStyle get titleMediumTextStyle => TextStyle(
         color: titleLargeColor,
+        fontSize: 28,
+        letterSpacing: 1.3,
+        fontWeight: FontWeight.w600,
         fontFamily: AniListFontFamily.comfortaa,
       );
 
-  TextStyle get titleMediumTextStyle => TextStyle(
+  TextStyle get titleLargeTextStyle => TextStyle(
         color: titleMediumColor,
         fontSize: 36,
         letterSpacing: 1.3,

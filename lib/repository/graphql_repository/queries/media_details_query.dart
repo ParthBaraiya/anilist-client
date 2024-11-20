@@ -1,4 +1,4 @@
-import 'package:anilist_client/repository/graphql_repository/queries/graphql_query.dart';
+import 'package:anilist_client/repository/graphql_repository/queries/common/graphql_query.dart';
 
 class MediaDetailsQuery extends GraphqlQuery {
   final int id;
@@ -78,60 +78,22 @@ class MediaDetailsQuery extends GraphqlQuery {
         edges{
           id
           relationType
-          isMainStudio
           node {
             id
-            title {
-              userPreferred
-            }
             coverImage {
               extraLarge
               large
               medium
               color
             }
-            genres
-            type
-            status
-            source
-            startDate {
-              year
-              month
-              day
-            }
-            updatedAt
-            endDate {
-              year
-              month
-              day
-            }
           }
         }
       }
-      characters(page: 1, perPage: 10) {
+      characters {
         edges {
           role
-          name
-          voiceActors {
-            id
-          }
-          voiceActorRoles {
-            roleNotes
-            dubGroup
-          }
-          favouriteOrder
           node {
             id
-            name {
-              first
-              middle
-              last
-              full
-              native
-              userPreferred
-            }
-            gender
-            age
             image {
               large
               medium
@@ -190,8 +152,9 @@ class MediaDetailsQuery extends GraphqlQuery {
         season
         allTime
       }
-      staff(page: 1, perPage: 10) {
+      staff {
         edges {
+          role
           node {
             name {
               first
@@ -208,7 +171,6 @@ class MediaDetailsQuery extends GraphqlQuery {
             }
             description
           }
-          role
         }
       }
     }

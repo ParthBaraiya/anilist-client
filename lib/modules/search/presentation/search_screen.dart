@@ -1,5 +1,5 @@
 import 'package:anilist_client/core/app_config.dart';
-import 'package:anilist_client/modules/anime_details/presentation/anime_grid_tile.dart';
+import 'package:anilist_client/modules/anime_details/presentation/widgets/anime_grid_tile.dart';
 import 'package:anilist_client/modules/search/domain/search_bloc.dart';
 import 'package:anilist_client/modules/search/domain/search_page_events.dart';
 import 'package:anilist_client/modules/search/domain/search_page_states.dart';

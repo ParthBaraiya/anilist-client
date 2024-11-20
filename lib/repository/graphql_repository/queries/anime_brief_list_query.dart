@@ -1,4 +1,4 @@
-import 'package:anilist_client/repository/graphql_repository/queries/paginated_query.dart';
+import 'package:anilist_client/repository/graphql_repository/queries/common/paginated_query.dart';
 
 class AnimeBriefListQuery extends PaginatedGraphQlQuery {
   final int _count;

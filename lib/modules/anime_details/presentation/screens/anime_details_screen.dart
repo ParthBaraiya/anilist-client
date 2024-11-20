@@ -4,10 +4,13 @@ import 'package:anilist_client/core/app_config.dart';
 import 'package:anilist_client/modules/anime_details/domain/anime_details_bloc.dart';
 import 'package:anilist_client/modules/anime_details/domain/anime_details_events.dart';
 import 'package:anilist_client/modules/anime_details/domain/anime_details_state.dart';
-import 'package:anilist_client/modules/anime_details/presentation/anime_character_tile.dart';
-import 'package:anilist_client/modules/anime_details/presentation/anime_relation_tile.dart';
-import 'package:anilist_client/modules/anime_details/presentation/anime_staff_tile.dart';
-import 'package:anilist_client/modules/anime_details/presentation/media_names_bottomsheet.dart';
+import 'package:anilist_client/modules/anime_details/presentation/widgets/anime_character_tile.dart';
+import 'package:anilist_client/modules/anime_details/presentation/widgets/anime_relation_tile.dart';
+import 'package:anilist_client/modules/anime_details/presentation/widgets/anime_staff_tile.dart';
+import 'package:anilist_client/modules/anime_details/presentation/widgets/media_names_bottomsheet.dart';
+import 'package:anilist_client/services/navigation_service/app_pages.dart';
+import 'package:anilist_client/services/navigation_service/arguments/character_list_route_argument.dart';
+import 'package:anilist_client/services/navigation_service/arguments/staff_list_route_argument.dart';
 import 'package:anilist_client/utilities/bloc_states/data_fetch_state.dart';
 import 'package:anilist_client/utilities/extensions/ani_watch_theme.dart';
 import 'package:anilist_client/utilities/extensions/build_context.dart';
@@ -511,7 +514,14 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                                 child: AniWatchSectionTitle(
                                   title: "Characters",
                                   onSeeMore: () {
-                                    // TODO(parth): Go to listing screen...
+                                    if (details.characters != null) {
+                                      context.push(
+                                        route: AppPages.characterList,
+                                        args: CharacterListRouteArgument(
+                                          characters: details.characters!,
+                                        ),
+                                      );
+                                    }
                                   },
                                 ),
                               ),
@@ -550,7 +560,14 @@ class _AnimeDetailsScreenState extends State<AnimeDetailsScreen> {
                                 child: AniWatchSectionTitle(
                                   title: "Staff",
                                   onSeeMore: () {
-                                    // TODO(parth): Go to listing screen...
+                                    if (details.staff != null) {
+                                      context.push(
+                                        route: AppPages.staffList,
+                                        args: StaffListRouteArgument(
+                                          staff: details.staff!,
+                                        ),
+                                      );
+                                    }
                                   },
                                 ),
                               ),

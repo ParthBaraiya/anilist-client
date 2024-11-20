@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: 40),
             Text(
               "Anime Zone",
-              style: AppConfig.theme.titleMediumTextStyle,
+              style: AppConfig.theme.titleLargeTextStyle,
             ),
             SizedBox(height: 40),
             Padding(
